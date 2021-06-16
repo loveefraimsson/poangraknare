@@ -9,6 +9,7 @@ class Player extends React.Component {
 
     removeScore = (evt) => {
         console.log("Remove score");
+        this.props.updateScore(this.props.score - 1, evt.target.id);
     }
 
 
