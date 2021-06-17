@@ -1,38 +1,55 @@
 import React from "react";
-//import Johan from "./johan/Johan";
-//import Anna from "./Anna/Anna";
 import Player from "./Player";
+import Form from "./Form";
 
 
 class Game extends React.Component {
 
     state = {
-        players: {
-            1: {pName: "Kalle", score: 0},
-            2: {pName: "Anna", score: 5},
-            3: {pName: "Johan", score: 8}
-        }
+        players: [
+            {id: 1, pName: "Kalle", score: 0},
+            {id: 2, pName: "Anna", score: 5},
+            {id: 3, pName: "Johan", score: 8},
+        ]      
     }
 
-    updateScore = (newScore, id) => {
-        console.log("Update score", newScore, "id", id);
 
-        const newState = {...this.state.players} 
-        console.log("newState", newState);
+    saveNewPlayer = (newPlayer) => {
+        const playersList = this.state.players;
+        playersList.push(newPlayer);
+        this.setState({players: playersList})
+    }
+    
+
+    updateScore = (newScore, id) => {
+
+        const newState = this.state.players;
         newState[id].score = newScore;
 
         this.setState(
             {players: newState}
         )
+
     }
     
     render() {
+
+        const sortPlayerList = this.state.players;
+        sortPlayerList.sort((a, b) => b.score - a.score);
+
         return (
-            <ul className="playersList">
-                { Object.keys(this.state.players).map((item, i) => 
-                    <Player key={i} id={item} pName={this.state.players[item].pName} score={this.state.players[item].score} updateScore={this.updateScore} />
-                )}
-            </ul>
+            <div>
+                <ul className="playersList">
+
+                    { Object.keys(this.state.players).map((item, i) => 
+                        <Player key={i} id={item} pName={this.state.players[item].pName} score={this.state.players[item].score} updateScore={this.updateScore} />
+                    )}
+
+                </ul>
+
+                <Form players={this.state.players} saveNewPlayer={this.saveNewPlayer} />
+                
+            </div>
         )
     }
 
